@@ -26,6 +26,7 @@ function EmailField(props) {
       required
       id='standard-required'
       label='Email'
+      helperText={errorState || props.emailError ? 'E-mail must be in correct format' : ' '}
       onBlur={(event) => validate(event.target.value)}
       error={errorState || props.emailError}
     />

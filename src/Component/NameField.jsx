@@ -21,6 +21,7 @@ function NameField(props) {
       required
       id='standard-required'
       label='Name'
+      helperText={errorState || props.nameError ? 'Name Required' : ' '}
       onBlur={(event) => validate(event.target.value)}
       error={errorState || props.nameError}
     />

@@ -1,27 +1,20 @@
 import React, { useState } from 'react';
-import { Button, makeStyles } from '@material-ui/core';
+import { Button, Paper } from '@material-ui/core';
 
 import NameField from './NameField';
 import EmailField from './EmailField';
 import MessageField from './MessageField';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& .MuiTextField-root': {
-      margin: theme.spacing(1),
-      width: 200,
-    },
-  },
-}));
+import emailGif from '../emailGif.gif';
 
 function Email() {
-  const classes = useStyles();
   const [name, setName] = useState();
   const [nameError, setNameError] = useState();
   const [email, setEmail] = useState();
   const [emailError, setEmailError] = useState();
   const [message, setMessage] = useState();
   const [MessageError, setMessageError] = useState();
+  const [isSending, setIsSending] = useState(false);
 
   const submit = () => {
     const data = { name, email, message };
@@ -29,6 +22,7 @@ function Email() {
     const isError = checkValidation();
 
     if (!isError) {
+      setIsSending(true);
       fetch('https://hpwifegr0m.execute-api.us-west-1.amazonaws.com/v1/mkc_email', {
         method: 'POST',
         mode: 'no-cors',
@@ -40,7 +34,8 @@ function Email() {
         .then((res) => console.log(res))
         .catch((err) => {
           throw err;
-        });
+        })
+        .finally(() => setIsSending(false));
     }
   };
 
@@ -65,8 +60,10 @@ function Email() {
     return error;
   };
 
-  return (
-    <form className={classes.root} noValidate autoComplete='off'>
+  return isSending ? (
+    <img src={emailGif} alt='emailing' height='100px' />
+  ) : (
+    <Paper elevation={5}>
       <div className='formContainer'>
         <NameField setName={setName} setNameError={setNameError} nameError={nameError} />
         <EmailField setEmail={setEmail} setEmailError={setEmailError} emailError={emailError} />
@@ -75,7 +72,7 @@ function Email() {
           Submit
         </Button>
       </div>
-    </form>
+    </Paper>
   );
 }
 

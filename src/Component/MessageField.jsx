@@ -24,8 +24,10 @@ function MessageField(props) {
       multiline
       rows={4}
       variant='outlined'
+      helperText={errorState || props.MessageError ? 'Message required' : ' '}
       onBlur={(event) => validate(event.target.value)}
       error={errorState || props.MessageError}
+      className='message'
     />
   );
 }
